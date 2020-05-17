@@ -1,0 +1,13 @@
+// Add bootstrap variables here, BEFORE the below imports
+
+$enable-responsive-font-sizes: true;
+$theme-colors: (
+  'primary': #8560b3
+);
+
+// The default color is too light for low-contrast accessibility (if prettier)
+$navbar-light-color: rgba(0, 0, 0, 0.7);
+$navbar-light-hover-color: rgba(0, 0, 0, 0.9);
+
+@import '@/node_modules/bootstrap/scss/bootstrap';
+@import '@/node_modules/bootstrap-vue/src/_variables';
