@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar type="dark" variant="primary">
+    <b-navbar type="dark" variant="primary" sticky>
       <b-navbar-brand href="#"><span>Wishlinking</span></b-navbar-brand>
       <b-button variant="secondary" class="ml-auto">Log In</b-button>
     </b-navbar>
