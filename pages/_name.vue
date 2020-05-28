@@ -14,6 +14,11 @@ import Vue from 'vue'
 import ListItems from '~/components/ListItems.vue'
 import ListSummary from '~/components/ListSummary.vue'
 export default Vue.extend({
+  data() {
+    return {
+      listName: this.$route.params.name
+    }
+  },
   components: {
     ListItems,
     ListSummary

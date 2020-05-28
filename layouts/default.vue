@@ -1,19 +1,31 @@
 <template>
   <div>
     <b-navbar type="dark" variant="primary" sticky>
-      <b-navbar-brand href="#"><span>Wishlinking</span></b-navbar-brand>
-      <b-button variant="secondary" class="ml-auto">Log In</b-button>
+      <b-navbar-brand href="#" @click="gotoHome"
+        ><span>Wishlinking</span></b-navbar-brand
+      >
+      <login-button class="ml-auto"></login-button>
     </b-navbar>
     <nuxt />
   </div>
 </template>
 
-<style lang="scss">
-@import '@/assets/scss/bootstrap_config.scss';
-nav button.btn-secondary:hover {
-  color: $white;
-}
+<script lang="ts">
+import Vue from 'vue'
+import LoginButton from '../components/LoginButton.vue'
+export default Vue.extend({
+  components: {
+    LoginButton
+  },
+  methods: {
+    gotoHome(): void {
+      this.$router.push('/')
+    }
+  }
+})
+</script>
 
+<style lang="scss">
 *,
 *:before,
 *:after {
