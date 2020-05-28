@@ -23,6 +23,8 @@ jobs:
         cmd: install
     - name: Generate Static Site
       uses: Borales/actions-yarn@v2.1.0
+      env:
+        API_URL: https://us-central1-wishlist-275117.cloudfunctions.net/wishlist
       with:
         cmd: run nuxt build
     - name: Upload Built Site
