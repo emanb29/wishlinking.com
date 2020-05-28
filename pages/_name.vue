@@ -10,6 +10,7 @@
         :addItemFn="addItem"
         :reserveFn="reserve"
         :showReservations="showReservations"
+        :isListOwner="isListOwner"
       />
       <div
         class="summary-wrapper col-12 col-md-4 order-0 order-md-1 align-self-start pl-md-0 sticky-top bg-white"
@@ -98,19 +99,18 @@ export default Vue.extend({
           return err.response
         } else throw err
       })
-    let list: any // TODO add a wishlist model
+    if (this.$cookies.get('authenticated') !== undefined) {
+      this.authedUser = await this.$axios.$get(env.API_URL + '/me', {
+        withCredentials: true
+      })
+    }
     if (preflight.status === 404) {
-      if (this.$cookies.get('authenticated') !== undefined) {
-        this.authedUser = await this.$axios.$get(env.API_URL + '/me', {
-          withCredentials: true
-        })
-      }
       if (
         this.authedUser &&
         this.authedUser.preferred_username === this.shortname
       ) {
         console.debug('No list found. Going to try to make it.')
-        list = await this.$axios.$post<List>(
+        this.list = await this.$axios.$post<List>(
           env.API_URL + '/wishlist',
           {
             id: uuid.v4(),
@@ -134,6 +134,14 @@ export default Vue.extend({
     }
 
     this.loaded = true
+  },
+  computed: {
+    isListOwner(): boolean {
+      return (
+        (this.authedUser && this.authedUser.sub) ===
+        (this.list && this.list.owner)
+      )
+    }
   }
 })
 </script>

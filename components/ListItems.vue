@@ -8,7 +8,7 @@
       :itemData="item"
       :showReservations="showReservations"
     />
-    <div class="listitem card my-2">
+    <div v-if="isListOwner" class="listitem card my-2">
       <form
         class="form p-4"
         @submit.prevent="
@@ -100,6 +100,10 @@ export default Vue.extend({
       required: true
     },
     showReservations: {
+      type: Boolean,
+      required: true
+    },
+    isListOwner: {
       type: Boolean,
       required: true
     }
