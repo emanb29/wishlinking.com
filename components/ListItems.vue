@@ -1,13 +1,24 @@
 <template>
   <div>
     <ListItem
-      v-for="i in _items"
+      v-for="(item, i) in _items"
       :key="i"
       class="d-block w-100 listitem"
       :reserveFn="reserveFn"
+      :itemData="item"
     />
     <div class="listitem card my-2">
-      <form class="form p-4" @submit.prevent="_addItemFn()">
+      <form
+        class="form p-4"
+        @submit.prevent="
+          _addItemFn(
+            newItem.name,
+            newItem.description || null,
+            newItem.url || null,
+            newItem.image || null
+          )
+        "
+      >
         <div class="form-group row">
           <label for="name" class="col-form-label col required">Name</label>
           <input
@@ -48,7 +59,9 @@
           />
         </div>
         <div class="row">
-        <button type="submit" class="btn btn-primary mx-auto col-5">Add Item</button>
+          <button type="submit" class="btn btn-primary mx-auto col-5">
+            Add Item
+          </button>
         </div>
       </form>
     </div>
@@ -96,12 +109,21 @@ export default Vue.extend({
       url: string | null,
       image: string | null
     ) => void {
-      return this.addItemFn as (
+      return (
         name: string,
         description: string | null,
         url: string | null,
         image: string | null
-      ) => void
+      ) => {
+        this.addItemFn(name, description, url, image)
+        // reset input
+        this.newItem = {
+          name: '',
+          description: null,
+          url: null,
+          image: null
+        }
+      }
     }
   },
   components: {

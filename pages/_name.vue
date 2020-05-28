@@ -7,7 +7,7 @@
       <ListItems
         class="col-12 col-md-8 order-1 order-md-0"
         :items="list && list.items"
-        :addItemFn="todo"
+        :addItemFn="addItem"
         :reserveFn="todo"
       />
       <div
@@ -52,6 +52,23 @@ export default Vue.extend({
     todo(...xs: any[]): void {
       console.log(xs)
       // TODO
+    },
+    async addItem(
+      name: string,
+      description: string | null,
+      url: string | null,
+      image: string | null
+    ): Promise<void> {
+      this.list!.items.push(
+        new Item(uuid.v4(), name, description, url, image, null)
+      )
+      this.list = await this.$axios.$put<List>(
+        env.API_URL + '/wishlist/' + this.list!.id,
+        this.list!,
+        {
+          withCredentials: true
+        }
+      )
     }
   },
   async beforeMount() {

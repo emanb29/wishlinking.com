@@ -2,10 +2,12 @@
   <div class="listsummary card my-2">
     <div class="card-body">
       <div class="card-title text-center">
-        <img v-if="image" :src="image" alt="">
+        <img v-if="image" :src="image" alt="" />
         <h4>{{ name }}</h4>
       </div>
-      {{ description }}
+      <div class="card-text">
+        {{ description }}
+      </div>
     </div>
   </div>
 </template>
