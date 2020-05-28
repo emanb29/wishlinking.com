@@ -38,7 +38,9 @@ export default Vue.extend({
     },
     logout(): void {
       // we don't need to actually render the call to logout
-      this.$axios.$get(env.API_URL + '/logout').then(_ => {
+      this.$axios.$get(env.API_URL + '/logout', {
+          withCredentials: true
+        }).then(_ => {
         this.$cookies.remove('authenticated')
         this.loggedIn = false
       })
