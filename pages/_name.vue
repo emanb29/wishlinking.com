@@ -4,11 +4,20 @@
       Loading...
     </div>
     <div v-if="loaded" class="d-flex flex-wrap">
-      <ListItems class="col-12 col-md-8 order-1 order-md-0" />
+      <ListItems
+        class="col-12 col-md-8 order-1 order-md-0"
+        :items="list && list.items"
+        :addItemFn="todo"
+        :reserveFn="todo"
+      />
       <div
-        class="summary-wrapper col-12 col-md-4 order-0 order-md-1 align-self-start pl-md-0 sticky-top"
+        class="summary-wrapper col-12 col-md-4 order-0 order-md-1 align-self-start pl-md-0 sticky-top bg-white"
       >
-        <ListSummary :description="listDescription" />
+        <ListSummary
+          :description="list && list.description"
+          :name="list && list.name"
+          :image="list && list.imageUrl"
+        />
       </div>
     </div>
   </div>
@@ -20,26 +29,33 @@ import env from '@/assets/util/env'
 import ListItems from '~/components/ListItems.vue'
 import ListSummary from '~/components/ListSummary.vue'
 import * as uuid from 'uuid'
+import { Wishlist as List, Item } from '@/assets/models'
 export default Vue.extend({
   data() {
     return {
       authedUser: undefined,
-      listName: this.$route.params.name,
-      listDescription: '',
-      loaded: false
+      loaded: false,
+      shortname: this.$route.params.name,
+      list: null
     } as {
       authedUser: any | undefined // TODO user model
-      listName: string
-      listDescription: string
       loaded: boolean
+      shortname: string
+      list: List | null
     }
   },
   components: {
     ListItems,
     ListSummary
   },
+  methods: {
+    todo(...xs: any[]): void {
+      console.log(xs)
+      // TODO
+    }
+  },
   async beforeMount() {
-    const listUrl = env.API_URL + '/wishlist/at/' + this.listName
+    const listUrl = env.API_URL + '/wishlist/at/' + this.shortname
     const preflight = await this.$axios
       .head(listUrl, {
         withCredentials: true
@@ -59,15 +75,15 @@ export default Vue.extend({
       }
       if (
         this.authedUser &&
-        this.authedUser.preferred_username === this.listName
+        this.authedUser.preferred_username === this.shortname
       ) {
         console.debug('No list found. Going to try to make it.')
-        list = await this.$axios.$post(
+        list = await this.$axios.$post<List>(
           env.API_URL + '/wishlist',
           {
             id: uuid.v4(),
             name: `${this.authedUser.preferred_username}'s wishlist`,
-            shortname: this.listName,
+            shortname: this.shortname,
             description: null,
             owner: this.authedUser.sub,
             items: []
@@ -80,13 +96,9 @@ export default Vue.extend({
         this.$router.push('/')
       }
     } else {
-      list = await this.$axios.$get(listUrl, {
+      this.list = await this.$axios.$get<List>(listUrl, {
         withCredentials: true
       })
-    }
-    let { id, name, shortname, description, owner, imageUrl, items } = list
-    if (this.listName === shortname) {
-      this.listDescription = description
     }
 
     this.loaded = true

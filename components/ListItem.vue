@@ -1,5 +1,5 @@
 <template>
-  <div class="listitem card my-2">
+  <div class="card my-2">
     <div class="card-body">
     ListItem here
     </div>
