@@ -5,8 +5,10 @@
       :key="i"
       class="d-block w-100 listitem"
       :reserveFn="reserveFn"
+      :removeFn="removeItemFn"
       :itemData="item"
       :showReservations="showReservations"
+      :isListOwner="isListOwner"
     />
     <div v-if="isListOwner" class="listitem card my-2">
       <form
@@ -92,6 +94,10 @@ export default Vue.extend({
       required: true
     },
     addItemFn: {
+      type: Function,
+      required: true
+    },
+    removeItemFn: {
       type: Function,
       required: true
     },

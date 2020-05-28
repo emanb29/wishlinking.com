@@ -8,6 +8,7 @@
         class="col-12 col-md-8 order-1 order-md-0"
         :items="list && list.items"
         :addItemFn="addItem"
+        :removeItemFn="removeItem"
         :reserveFn="reserve"
         :showReservations="showReservations"
         :isListOwner="isListOwner"
@@ -66,6 +67,16 @@ export default Vue.extend({
       this.list!.items.push(
         new Item(uuid.v4(), name, description, url, image, null)
       )
+      this.list = await this.$axios.$put<List>(
+        env.API_URL + '/wishlist/' + this.list!.id,
+        this.list!,
+        {
+          withCredentials: true
+        }
+      )
+    },
+    async removeItem(itemId: string) {
+      this.list!.items = this.list!.items.filter(i => i.id != itemId)
       this.list = await this.$axios.$put<List>(
         env.API_URL + '/wishlist/' + this.list!.id,
         this.list!,
