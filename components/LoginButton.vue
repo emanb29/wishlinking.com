@@ -32,6 +32,21 @@ export default Vue.extend({
       else return this.$cookies.get<string>('authenticated')
     }
   },
+  async mounted() {
+    if (!this.loggedIn) {
+      console.log("Checking if logged in...")
+      try {
+        const user = await this.$axios.$get(env.API_URL + '/me', {
+          withCredentials: true
+        })
+        this.$cookies.set('authenticated', user.preferred_username as string)
+        this.loggedIn = true
+      } catch (err) {
+        console.debug(err)
+        // This probably just means the user wasn't logged in
+      }
+    }
+  },
   methods: {
     login(): void {
       window.location.href = env.API_URL + '/login'
