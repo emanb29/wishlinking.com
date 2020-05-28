@@ -6,6 +6,7 @@
       class="d-block w-100 listitem"
       :reserveFn="reserveFn"
       :itemData="item"
+      :showReservations="showReservations"
     />
     <div class="listitem card my-2">
       <form
@@ -96,6 +97,10 @@ export default Vue.extend({
     },
     reserveFn: {
       type: Function,
+      required: true
+    },
+    showReservations: {
+      type: Boolean,
       required: true
     }
   },

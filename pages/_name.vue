@@ -8,7 +8,8 @@
         class="col-12 col-md-8 order-1 order-md-0"
         :items="list && list.items"
         :addItemFn="addItem"
-        :reserveFn="todo"
+        :reserveFn="reserve"
+        :showReservations="showReservations"
       />
       <div
         class="summary-wrapper col-12 col-md-4 order-0 order-md-1 align-self-start pl-md-0 sticky-top bg-white"
@@ -16,7 +17,7 @@
         <ListSummary
           :description="list && list.description"
           :name="list && list.name"
-          :image="list && list.imageUrl"
+          :toggleReservations="toggleReservations"
         />
       </div>
     </div>
@@ -36,12 +37,14 @@ export default Vue.extend({
       authedUser: undefined,
       loaded: false,
       shortname: this.$route.params.name,
-      list: null
+      list: null,
+      showReservations: false
     } as {
       authedUser: any | undefined // TODO user model
       loaded: boolean
       shortname: string
       list: List | null
+      showReservations: boolean
     }
   },
   components: {
@@ -69,6 +72,18 @@ export default Vue.extend({
           withCredentials: true
         }
       )
+    },
+    async reserve(itemId: string, reservedBy: string | null) {
+      this.list = await this.$axios.$put<List>(
+        `${env.API_URL}/wishlist/${this.list!.id}/${itemId}/reservation`,
+        {
+          reservedBy
+        },
+        { withCredentials: true }
+      )
+    },
+    toggleReservations(): void {
+      this.showReservations = !this.showReservations
     }
   },
   async beforeMount() {
