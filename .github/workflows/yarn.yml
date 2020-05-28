@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Yarn Build
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Dependencies
+      uses: Borales/actions-yarn@v2.1.0
+      with:
+        cmd: install
+    - name: Generate Static Site
+      uses: Borales/actions-yarn@v2.1.0
+      with:
+        cmd: run nuxt build
+    - name: Upload Built Site
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: static-latest
+        path: dist
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Built Site
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: static-latest
+        path: ./dist
+    - name: Deploy to GH Pages 🚀
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./dist

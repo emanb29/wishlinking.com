@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div v-if="!loaded">
-      Loading...
-    </div>
+    <div v-if="!loaded">Loading wishlist {{ shortname }}...</div>
     <div v-if="loaded" class="d-flex flex-wrap">
       <ListItems
         class="col-12 col-md-8 order-1 order-md-0"
