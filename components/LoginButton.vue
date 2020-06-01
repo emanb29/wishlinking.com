@@ -33,8 +33,10 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    if (!this.loggedIn) {
-      console.log("Checking if logged in...")
+    if (this.$cookies.get('logout') !== undefined) {
+      // just got back from logging out
+    } else if (!this.loggedIn) {
+      console.log('Checking if logged in...')
       try {
         const user = await this.$axios.$get(env.API_URL + '/me', {
           withCredentials: true
@@ -49,9 +51,11 @@ export default Vue.extend({
   },
   methods: {
     login(): void {
+      this.$cookies.remove('logout')
       window.location.href = env.API_URL + '/login'
     },
     logout(): void {
+      this.$cookies.set('logout', true)
       // we don't need to actually render the call to logout
       this.$axios.$get(env.API_URL + '/logout').then(_ => {
         this.$cookies.remove('authenticated')

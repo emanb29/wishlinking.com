@@ -1,26 +1,25 @@
 <template>
   <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        Wishlinking
-      </h1>
-      <h2 class="subtitle">
-        A wishlist app
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <b-jumbotron
+      class="mt-4"
+      header="Wishlinking"
+      lead="The handiest-dandiest wishlist web application"
+    >
+      <dl>
+        <dt>To create a wishlist:</dt>
+        <dd>
+          Simply log in! The first time you open your wishlist it may take a
+          moment as we set up the list for you.
+        </dd>
+        <dt>To access someone else's list:</dt>
+        <dd>Visit the list URL.</dd>
+        <dt>To reserve an item:</dt>
+        <dd>
+          On someone's list, first enable viewing reservations by pressing the
+          "Toggle reservations" button, then check the "Reserved" box
+        </dd>
+      </dl>
+    </b-jumbotron>
   </div>
 </template>
 
@@ -35,35 +34,4 @@ export default Vue.extend({
 })
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
+<style></style>
