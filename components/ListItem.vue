@@ -101,9 +101,4 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss">
-.item-card .card-text {
-  img.item-preview {
-    clip-path: circle(50% at 50% 50%);
-  }
-}
 </style>
